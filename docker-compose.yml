@@ -1,0 +1,20 @@
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - 8080:8080
+#     environment:
+#       - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/capstonedb?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false'
+#       - 'SPRING_DATASOURCE_USERNAME=Joseph'
+#       - 'SPRING_DATASOURCE_PASSWORD=joseph'
+#     depends_on:
+#       - mysql
+#   mysql:
+#     image: 'mysql:latest'
+#     environment:
+#       - 'MYSQL_DATABASE=capstonedb'
+#       - 'MYSQL_PASSWORD=joseph'
+#       - 'MYSQL_ROOT_PASSWORD=joseph'
+#       - 'MYSQL_USER=Joseph'
+#     ports:
+#       - '3306'
