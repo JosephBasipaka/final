@@ -15,6 +15,7 @@ public interface DunningRepository extends JpaRepository<Dunning, Long> {
     @Query("SELECT d FROM Dunning d WHERE d.customer = :customer")
     List<Dunning> findDunningStepsForCustomer(@Param("customer") Customer customer);
 
+
     Dunning findByCustomerAndStepNameAndStatusAndService(
         Customer customer,
         String stepName,

@@ -7,5 +7,4 @@ public enum PaymentStatus {
     FAILED,     // Payment failed or encountered an issue during processing.
     REFUNDED,   // Payment was refunded to the customer.
     SETTLED     // Payment has been settled or cleared.
-    // You can add more status values as needed.
 }

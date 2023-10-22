@@ -19,7 +19,7 @@ import com.example.demo.service.ServiceService;
 
 
 @SpringBootTest
-public class ServiceSeriveTest {
+ class ServiceSeriveTest {
     
     @Autowired
     private ServiceService serviceService;
@@ -28,7 +28,7 @@ public class ServiceSeriveTest {
     private ServiceRepository serviceRepository;
 
     @Test
-    public void testServiceList_Success() {
+    void testServiceList_Success() {
         List<Service> services = new ArrayList<>();
         services.add(new Service(1L, "basic" , 1000, "Active", null, null));
         services.add(new Service(2L, "premium" , 5000, "Terminated", null, null));
@@ -38,7 +38,7 @@ public class ServiceSeriveTest {
         assertEquals(2, result.size());
     }
     @Test
-    public void testServiceList_Fail() {
+    void testServiceList_Fail() {
         List<Service> services = new ArrayList<>();
         services.add(new Service(1L, "basic" , 1000, "Active", null, null));
         Mockito.when(serviceRepository.findAll()).thenReturn(services);
@@ -48,7 +48,7 @@ public class ServiceSeriveTest {
     }
 
     @Test
-    public void testAddService_Success() {
+     void testAddService_Success() {
         Service Service = new Service(1L, "basic" , 1000, "Active", null, null);
         Mockito.when(serviceRepository.save(Service)).thenReturn(Service);
 
@@ -56,7 +56,7 @@ public class ServiceSeriveTest {
         assertEquals(Service, createdService);
     }
     @Test
-    public void testAddService_Fail() {
+    void testAddService_Fail() {
        Service Service = new Service(1L, "basic" , 1000, "Active", null, null);
         Mockito.when(serviceRepository.save(Service)).thenReturn(Service);
 
@@ -66,7 +66,7 @@ public class ServiceSeriveTest {
     }
 
      @Test
-    public void testFindServiceForCustomer_Success() {
+     void testFindServiceForCustomer_Success() {
         List<Service> services = new ArrayList<>();
         Service service = new Service(1L, "basic" , 1000, "Active", null, null);
         services.add(service);

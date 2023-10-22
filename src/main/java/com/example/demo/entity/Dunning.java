@@ -9,12 +9,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
-@Data
+
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Dunning {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +45,5 @@ public class Dunning {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
-    // Constructors, getters, and setters
+
 }

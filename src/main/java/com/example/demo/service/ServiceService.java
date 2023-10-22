@@ -27,7 +27,9 @@ public class ServiceService {
     public Service findServiceForCustomer(Customer customer) {
         return serviceRepository.findByCustomer(customer);
     }
-    
+    public Service findId(Long customerId,String serviceName){
+        return serviceRepository.findByCustomerIdAndServiceName(customerId,serviceName);
+     }
     public Service createService(Service service) {
         // System.out.println(service.getCustomer().getId());
         // Customer customer = customerRepository.findById(service.getCustomer().getId()).orElse(null);
@@ -36,5 +38,8 @@ public class ServiceService {
         //     service.setCustomer(customer);
         // }
         return serviceRepository.save(service);
+    }
+    public Service getService(Long serviceId){
+        return serviceRepository.findById(serviceId).orElse(null);
     }
 }

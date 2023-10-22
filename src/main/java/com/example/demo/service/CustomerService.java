@@ -60,10 +60,9 @@ public class CustomerService {
             return false;
         }
         LocalDate today = LocalDate.now();
-        System.out.println(today);
         for (Invoice invoice : invoices) {
             // && !invoice.getPaid()
-            if (invoice.getDueDate() != null  && invoice.getDueDate().isBefore(today)) {
+            if (invoice.getDueDate() != null && invoice.getDueDate().isBefore(today)) {
                 return true;
             }
         }

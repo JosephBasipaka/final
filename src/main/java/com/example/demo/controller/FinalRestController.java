@@ -23,7 +23,7 @@ import com.example.demo.service.ServiceService;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
-public class finalRestController {
+public class FinalRestController {
 
     @Autowired
     private CustomerService customerService;
@@ -40,23 +40,8 @@ public class finalRestController {
     }
 
     @GetMapping("/customers")
-    public List<Customer> customerList(){
-        return customerService.getAllCustomers();
-    }
-
-    @GetMapping("/invoice")
-    public List<Invoice> InvoiceList(){
-        return invoiceService.InvoiceList();
-    }
-
-    @GetMapping("/services")
-    public List<Service> ServiceList(){
-        return serviceService.serviceList();
-    }
-
-    @GetMapping("/works")
-    public String starting(){
-        return "heyy I am working";
+    public ResponseEntity<List<Customer>> customerList(){
+        return ResponseEntity.ok().body(customerService.getAllCustomers());
     }
 
     @PostMapping("/addCustomer")
@@ -67,7 +52,6 @@ public class finalRestController {
     @PostMapping("/addService")
     public ResponseEntity<Service> addService(@RequestBody Service service) {
         Service newService = serviceService.createService(service);
-        // System.out.println("service" + newService + "service customer" + newService.getCustomer());
         return new ResponseEntity<>(newService, HttpStatus.CREATED);
     }
     @PostMapping("/addInvoice")
@@ -77,11 +61,19 @@ public class finalRestController {
     }
 
     @GetMapping("/customer/id")
-    public ResponseEntity<Long> getCustomerId(@RequestParam String name, @RequestParam String email) {
-        // Query the customer by name and email
+    public ResponseEntity<Customer> getCustomerId(@RequestParam String name, @RequestParam String email) {
         Customer customer = customerService.findId(name,email);
         if (customer != null) {
-            return new ResponseEntity<>(customer.getId(), HttpStatus.OK);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/service/id")
+    public ResponseEntity<Service> getServiceId(@RequestParam Long customerId,@RequestParam String serviceName) {
+        Service service = serviceService.findId(customerId, serviceName);
+        if (service != null) {
+            return new ResponseEntity<>(service, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

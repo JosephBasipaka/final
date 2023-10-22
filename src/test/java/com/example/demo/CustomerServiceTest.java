@@ -2,6 +2,7 @@ package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,7 +26,7 @@ import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.service.CustomerService;
 
 @SpringBootTest
-public class CustomerServiceTest {
+ class CustomerServiceTest {
     
     @Autowired
     private CustomerService customerService;
@@ -42,15 +43,15 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testGetCustomerById_Success(){
+    void testGetCustomerById_Success(){
         String name = "joseph";
         Customer customerById = customerService.getCustomerById((long)1);
         assertEquals(name , customerById.getName());
-        assertFalse("jo".equals(customerById.getName()));
+        assertNotEquals("jo" , customerById.getName());
     }
 
     @Test
-    public void testGetAllCustomers_Success() {
+    void testGetAllCustomers_Success() {
         List<Customer> customers = new ArrayList<>();
         customers.add(new Customer(1L, "John", "john@gmail.com", null, null));
         customers.add(new Customer(2L, "Joseph", "joseph@gmail.com", null, null));
@@ -61,7 +62,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCreateCustomer_Success() {
+     void testCreateCustomer_Success() {
         Customer newCustomer = new Customer(3L, "jo", "jo@gmail.com", null, null);
         Mockito.when(customerRepository.save(newCustomer)).thenReturn(newCustomer);
 
@@ -70,7 +71,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testFindId_Success() {
+     void testFindId_Success() {
         String name = "j";
         String email = "j@gmail.com";
         Customer expectedCustomer = new Customer(1L, name, email, null, null);
@@ -82,7 +83,7 @@ public class CustomerServiceTest {
     }
 
      @Test
-    public void testUpdateCustomer_Success() {
+     void testUpdateCustomer_Success() {
         Long customerId = 1L;
         Customer updatedCustomer = new Customer(customerId, "jo", "j@gmail.com", null, null);
         Mockito.when(customerRepository.existsById(customerId)).thenReturn(true);
@@ -93,7 +94,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testUpdateCustomer_NotFound() {
+     void testUpdateCustomer_NotFound() {
         Long customerId = 1L;
         Customer updatedCustomer = new Customer(customerId, "jo", "j@gmail.com", null, null);
         Mockito.when(customerRepository.existsById(customerId)).thenReturn(false);
@@ -103,7 +104,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testDeleteCustomer_Success() {
+     void testDeleteCustomer_Success() {
         Long customerId = 1L;
         Mockito.when(customerRepository.existsById(customerId)).thenReturn(true);
 
@@ -112,7 +113,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testDeleteCustomer_NotFound() {
+     void testDeleteCustomer_NotFound() {
         Long customerId = 1L;
         Mockito.when(customerRepository.existsById(customerId)).thenReturn(false);
 
@@ -121,7 +122,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testIsOverdue_NoInvoices() {
+     void testIsOverdue_NoInvoices() {
         Customer customer = new Customer(1L , "jo", "j@gmail.com", null, null);
         customer.setInvoices(new ArrayList<>());
 
@@ -130,7 +131,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testIsOverdue_AllInvoicesPaid() {
+     void testIsOverdue_AllInvoicesPaid() {
         Customer customer = new Customer(1L , "jo", "j@gmail.com", null, null);
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null)); 
@@ -141,7 +142,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testIsOverdue_SomeInvoicesOverdue() {
+     void testIsOverdue_SomeInvoicesOverdue() {
         Customer customer = new Customer(1L , "jo", "j@gmail.com", null, null);
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now().minusDays(1), Boolean.FALSE,null,null));  // Overdue, not paid
@@ -154,7 +155,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testIsOverdue_AllInvoicesOverdue() {
+     void testIsOverdue_AllInvoicesOverdue() {
         Customer customer = new Customer(1L , "jo", "j@gmail.com", null, null);
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now().minusDays(1), Boolean.FALSE,customer,null));  // Overdue, not paid
@@ -166,7 +167,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testFindOverdueCustomers_Success() {
+     void testFindOverdueCustomers_Success() {
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now().minusDays(5), Boolean.TRUE,null,null));
         invoices.add(new Invoice(2L,3000.0,LocalDate.now().plusDays(2), Boolean.TRUE,null,null));

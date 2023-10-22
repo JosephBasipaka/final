@@ -18,7 +18,7 @@ import com.example.demo.repositories.InvoiceRepository;
 import com.example.demo.service.InvoiceService;
 
 @SpringBootTest
-public class InvoiceServiceTest {
+ class InvoiceServiceTest {
     
     @Autowired
     private InvoiceService invoiceService;
@@ -29,7 +29,7 @@ public class InvoiceServiceTest {
     
 
     @Test
-    public void testInvoiceList_Success() {
+     void testInvoiceList_Success() {
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null));
         invoices.add(new Invoice(2L,3000.0,LocalDate.now(), Boolean.TRUE,null,null));
@@ -39,7 +39,7 @@ public class InvoiceServiceTest {
         assertEquals(2, result.size());
     }
     @Test
-    public void testInvoiceList_Fail() {
+     void testInvoiceList_Fail() {
         List<Invoice> invoices = new ArrayList<>();
         invoices.add(new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null));
         Mockito.when(invoiceRepository.findAll()).thenReturn(invoices);
@@ -49,7 +49,7 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    public void testAddInvoice_Success() {
+     void testAddInvoice_Success() {
         Invoice invoice = new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null);
         Mockito.when(invoiceRepository.save(invoice)).thenReturn(invoice);
 
@@ -57,7 +57,7 @@ public class InvoiceServiceTest {
         assertEquals(invoice, createdInvoice);
     }
     @Test
-    public void testAddInvoice_Fail() {
+     void testAddInvoice_Fail() {
         Invoice invoice = new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null);
         Mockito.when(invoiceRepository.save(invoice)).thenReturn(invoice);
 

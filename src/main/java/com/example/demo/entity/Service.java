@@ -14,12 +14,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Service{
     
     @Id
@@ -29,12 +34,12 @@ public class Service{
     private double serviceCost;
     private String status;
 
-    @JsonBackReference
+    @JsonBackReference(value="service-customer")
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @JsonManagedReference
+    @JsonManagedReference(value="invoice-service")
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Invoice> invoices;
 
@@ -46,17 +51,5 @@ public class Service{
             ", serViceCost=" + serviceCost +
             ", status=" + status +
             '}';
-    }
-
-    public Service(Long id, String serviceName, double serviceCost, String status, Customer customer, List<Invoice> invoices){
-        this.id = id;
-        this.serviceName = serviceName;
-        this.serviceCost = serviceCost;
-        this.status = status;
-        this.customer = customer;
-        this.invoices = invoices;
-    }
-    public Service(){
-
     }
 }

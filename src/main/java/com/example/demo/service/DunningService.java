@@ -17,7 +17,7 @@ import com.example.demo.entity.Reminder;
 import com.example.demo.entity.Service;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.DunningRepository;
-import com.example.demo.repositories.RemainderRepository;
+import com.example.demo.repositories.ReminderRepository;
 import com.example.demo.repositories.ServiceRepository;
 
 import java.util.List;
@@ -45,12 +45,17 @@ public class DunningService {
     @Autowired
     private CustomerService customerService; 
     @Autowired
+    private ServiceService serviceService; 
+    @Autowired
     private CustomerRepository customerRepository;
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
-    private RemainderRepository remainderRepository;
+    private ReminderRepository reminderRepository;
     
+    private String intialReminder = "Initial Reminder";
+    private String followUpReminder = "Follow-Up Reminder";
+    private String finalNotice = "Final Notice";
     public DunningService(){
         
     }
@@ -59,8 +64,23 @@ public class DunningService {
         this.serviceRepository = serviceRepository;
         this.dunningRepository = dunningRepository;
     }
-
+    public void initiateDunningProcess(Customer customer, Service service, String stepname){
+        if(intialReminder.equals(stepname)){
+            Dunning existingIntialReminder = dunningRepository.findByCustomerAndStepNameAndStatusAndService(customer, "Initial Reminder", "Reminder Sent", service);
+            if(existingIntialReminder == null){
+                initiateDunning(customer, service, stepname);
+            }
+            else System.out.println("Initial Reminder has already been sent for Customer: " + customer.getName() + " and Service: " + service.getServiceName());
+        }
+        if(followUpReminder.equals(stepname)){
+            initiateDunning(customer, service, stepname);
+        }
+        if(finalNotice.equals(stepname)){
+            initiateDunning(customer, service, stepname);
+        }
+    }
     public void initiateDunning(Customer customer, Service service, String stepName) {
+        
         Dunning dunningStep = new Dunning();
         dunningStep.setCustomer(customer);
         dunningStep.setService(service);
@@ -75,17 +95,18 @@ public class DunningService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // sendDunningReminder(dunningStep);
-        dunningRepository.save(dunningStep);
+        sendDunningReminder(dunningStep);
+        // dunningRepository.save(dunningStep);
 
-        // Reminder rem = new Reminder();
-        // rem.setCustomer(customer);
-        // rem.setContent(stepName);
-        // rem.setTimestamp(new Date());
-        // remainderRepository.save(rem);
+        Reminder rem = new Reminder();
+        rem.setCustomer(customer);
+        rem.setContent(stepName);
+        rem.setTimestamp(new Date());
+        reminderRepository.save(rem);
 
         System.out.println("Remainder Step (" + stepName + ") completed for Customer: " + customer.getName());
         System.out.println("Dunning Step (" + stepName + ") completed for Customer: " + customer.getName());
+    
     }
 
     public List<Customer> findCustomersWithFollowUp() {
@@ -100,13 +121,13 @@ public class DunningService {
         return customersWithFollowUp;
     }
     public boolean isFinalNoticeSent(Customer customer,Service service) {
-        Dunning finalNotice = dunningRepository.findByCustomerAndStepNameAndStatusAndService(
+        Dunning isfinalNotice = dunningRepository.findByCustomerAndStepNameAndStatusAndService(
             customer,
-            "Final Notice",
-            "Remainder Sent",
+            finalNotice,
+            "Reminder Sent",
             service
         );
-        return finalNotice != null;
+        return isfinalNotice != null;
     }
     public List<Customer> findCustomersWithFinalNotice() {
         List<Customer> customersWithFinalNotice = new ArrayList<>();
@@ -120,14 +141,14 @@ public class DunningService {
     }
 
     private boolean customerRequiresFollowUp(Customer customer) {
-        int maxReminders = 5;
-        int remindersSent = (int) remainderRepository.countRemindersSentForCustomer(customer);
+        int maxReminders = 2;
+        int remindersSent = (int) reminderRepository.countRemindersSentForCustomer(customer);
         System.out.println("rem count" + remindersSent);
         return customerService.isOverdue(customer) && remindersSent <= maxReminders;
     }
     private boolean customerRequiresFinalNotice(Customer customer) {
-        int maxReminders = 4; 
-        int remindersSent = (int) remainderRepository.countRemindersSentForCustomer(customer);
+        int maxReminders = 3; 
+        int remindersSent = (int) reminderRepository.countRemindersSentForCustomer(customer);
     
         return customerService.isOverdue(customer) && remindersSent >= maxReminders;
     }
@@ -157,17 +178,17 @@ public class DunningService {
         sendServiceTerminationEmail(customer.getEmail());
     }
     
-    // private void sendDunningReminder(Dunning dunningStep) {
-    //     Customer customer = dunningStep.getCustomer();
-    //     String reminderMessage = generateReminderMessage(dunningStep);
-    //     boolean sentSuccessfully = sendNotification(customer.getEmail(), reminderMessage);
-    //     if (sentSuccessfully) {
-    //         dunningStep.setStatus("Reminder Sent");
-    //         dunningRepository.save(dunningStep);
-    //     } else {
-    //         System.out.println("Remainder not sent");
-    //     }
-    // }
+    private void sendDunningReminder(Dunning dunningStep) {
+        Customer customer = dunningStep.getCustomer();
+        String reminderMessage = generateReminderMessage(dunningStep);
+        boolean sentSuccessfully = sendNotification(customer.getEmail(), reminderMessage);
+        if (sentSuccessfully) {
+            dunningStep.setStatus("Reminder Sent");
+            dunningRepository.save(dunningStep);
+        } else {
+            System.out.println("Remainder not sent");
+        }
+    }
 
 public boolean sendNotification(String recipientEmail, String messageContent) {
     String senderEmail = "josephbasipaka@gmail.com";
@@ -220,11 +241,9 @@ public String generateReminderMessage(Dunning dunningStep) {
     String stepName = dunningStep.getStepName();
 
 
-    String reminderMessage = "Dear " + customerName + ",\n" +
+    return "Dear " + customerName + ",\n" +
                             "This is a reminder for your service '" + serviceName + "'.\n" +
                             "Please take action for the '" + stepName + "' step.";
-
-    return reminderMessage;
 }
 public Session createMailSession() {
     String senderEmail = "josephbasipaka@gmail.com";
@@ -236,13 +255,11 @@ public Session createMailSession() {
     properties.put("mail.smtp.starttls.enable", "true");
     properties.put("mail.smtp.host", smtpHost);
    
-    Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+    return Session.getInstance(properties, new javax.mail.Authenticator() {
         protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
             return new javax.mail.PasswordAuthentication(senderEmail, senderPassword);
         }
     });
-    
-    return session;
 }
 public boolean sendServiceTerminationEmail(String customerEmail) {
     String senderEmail = "josephbasipaka@gmail.com";
@@ -337,7 +354,7 @@ public boolean sendServiceTerminationEmail(String customerEmail) {
         document.close();
     }
 
-    private Path getTempDirectory() {
+    public Path getTempDirectory() {
     String environment = System.getProperty("app.environment");
     if ("test".equalsIgnoreCase(environment)) {
         try {
@@ -349,5 +366,25 @@ public boolean sendServiceTerminationEmail(String customerEmail) {
         return Paths.get("/home/joseph/final");
     }
 }
+
+    public List<DunningResponse> getDunningDetails(Long customerId, Long serviceId){
+        Customer customer = customerService.getCustomerById(customerId); // Replace with your own service to retrieve a customer
+        Service service = serviceService.getService(serviceId);
+        List<DunningResponse> dunningResponses = new ArrayList<>();
+        
+        Dunning initialDunning = dunningRepository.findByCustomerAndStepNameAndStatusAndService(customer, "Initial Reminder", "Reminder Sent",service);
+        boolean initialReminder = initialDunning != null;
+
+        // Fetch "Final" data
+        Dunning finalDunning = dunningRepository.findByCustomerAndStepNameAndStatusAndService(customer, "Final Notice", "Reminder Sent",service);
+        boolean finalReminder = finalDunning != null;
+
+        // Fetch "Follow-Up" data
+        long followUpReminderCount = reminderRepository.countRemindersSentForCustomerWithContent(customer,"Follow-Up Reminder");
+
+        DunningResponse initialResponse = new DunningResponse(initialReminder, followUpReminderCount, finalReminder);
+        dunningResponses.add(initialResponse);
+        return dunningResponses;
+    }
 }
 

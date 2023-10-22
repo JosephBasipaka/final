@@ -17,16 +17,6 @@ function Customer() {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-    // fetchInvoices()
-    //   .then((response) => {
-    //     setInvoices(response.data);
-    //     console.log(response.data)
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching data:', error);
-    //     setLoading(false);
-    //   });
   }, []);
 
   return (
@@ -75,22 +65,6 @@ function Customer() {
       </tbody>
     </table>
   )}
-
-
-    {/* <div>
-    <h1>Invoice List</h1>
-    {loading ? (
-      <p>Loading...</p>
-    ) : invoices.length === 0 ? (
-      <p>No invoices found.</p>
-    ) : (
-      <ul>
-        {invoices.map((invoice) => (
-        <li key={invoice.id}>Name : amount : {invoice.amount} Due Date : {invoice.dueDate} Status: {invoice.paid ? "Paid" : "Unpaid"}</li>
-      ))}
-      </ul>
-    )}
-  </div> */}
   </div>
   );
 }

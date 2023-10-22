@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -13,8 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import javax.mail.NoSuchProviderException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +28,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Dunning;
 import com.example.demo.entity.Service;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.DunningRepository;
-import com.example.demo.repositories.RemainderRepository;
+import com.example.demo.repositories.ReminderRepository;
 import com.example.demo.repositories.ServiceRepository;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.DunningService;
@@ -40,7 +43,8 @@ import com.example.demo.service.DunningService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class DunningServiceTest {
+@ExtendWith(SpringExtension.class)
+class DunningServiceTest {
     
     @InjectMocks
     private DunningService dunningService;
@@ -59,38 +63,38 @@ public class DunningServiceTest {
     @MockBean
     private ServiceRepository serviceRepository;
     @Mock
-    private RemainderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
-//     @Test
-// public void testSendNotification_Success() throws NoSuchProviderException {
-//     // Mock Session and Transport objects
-//     Session sessionMock = Mockito.mock(Session.class);
-//     Transport transportMock = Mockito.mock(Transport.class);
+    @Test
+void testSendNotification_Success() throws NoSuchProviderException {
+    // Mock Session and Transport objects
+    // Session sessionMock = Mockito.mock(Session.class);
+    // Transport transportMock = Mockito.mock(Transport.class);
 
-//     // Mock the behavior of the session
-//     Mockito.when(sessionMock.getTransport("smtp")).thenReturn(transportMock);
+    // // Mock the behavior of the session
+    // Mockito.when(sessionMock.getTransport("smtp")).thenReturn(transportMock);
 
-//     boolean result = dunningService.sendNotification("recipient@example.com", "Test message");
+    boolean result = dunningService.sendNotification("recipient@example.com", "Test message");
 
-//     assertTrue(result);
-// }
-//     @Test
-//     public void testSendTerminationEmail_Success() throws NoSuchProviderException {
-//         // Mock Session and Transport objects
-//         Session sessionMock = Mockito.mock(Session.class);
-//         Transport transportMock = Mockito.mock(Transport.class);
+    assertTrue(result);
+}
+    @Test
+    void testSendTerminationEmail_Success() throws NoSuchProviderException {
+        // Mock Session and Transport objects
+        // Session sessionMock = Mockito.mock(Session.class);
+        // Transport transportMock = Mockito.mock(Transport.class);
         
-//         // Mock the behavior of the session
-//         Mockito.when(sessionMock.getTransport("smtp")).thenReturn(transportMock);
-//         // Mockito.when(sessionMock.getProperty("mail.smtp.from")).thenReturn("test@example.com");
+        // // Mock the behavior of the session
+        // Mockito.when(sessionMock.getTransport("smtp")).thenReturn(transportMock);
+        // Mockito.when(sessionMock.getProperty("mail.smtp.from")).thenReturn("recepient@example.com");
 
-//         boolean result = dunningService.sendServiceTerminationEmail("recipient@example.com");
+        boolean result = dunningService.sendServiceTerminationEmail("recipient@example.com");
 
-//         assertTrue(result);
-// }
+        assertTrue(result);
+}
 
 @Test
-public void testGeneratePdf_Success() throws IOException {
+void testGeneratePdf_Success() throws IOException {
     Path tempDir = Files.createTempDirectory("pdf_test");
 
     Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", null, null);
@@ -111,42 +115,25 @@ public void testGeneratePdf_Success() throws IOException {
 
     }
     // @Test
-    // public void testInitiateDunning_Success() throws IOException {
+    // void testInitiateDunning_Success() throws IOException {
     //     List<Service> services = new ArrayList<>();
     //     Service service = new Service(1L, "Basic", 1000, "Active", null, null);
     //     services.add(service);
-    //     Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", services, null);
+    //     Customer customer = new Customer(1L, "jo", "jo@example.com", null, null);
     //     String stepName = "Initial Reminder";
 
-    //     DunningRepository dunningRepository = Mockito.mock(DunningRepository.class);
-    // CustomerRepository customerRepository = Mockito.mock(CustomerRepository.class);
-    // ServiceRepository serviceRepository = Mockito.mock(ServiceRepository.class);
-
-    // // Create your DunningService instance with the mocked repositories
-    //     DunningService dunningService = new DunningService(dunningRepository, customerRepository, serviceRepository);
     //     Dunning dunningStep = new Dunning();
     //     dunningStep.setCustomer(customer);
     //     dunningStep.setService(service);
     //     dunningStep.setStepName(stepName);
     //     dunningStep.setStatus("Pending");
-        
+    //     dunningStep.setTimestamp(new Date());
     //     dunningService.initiateDunning(customer, service, stepName);
-
-    //     Mockito.when(customerRepository.save(customer)).thenReturn(customer);
-    //     Mockito.when(serviceRepository.save(service)).thenReturn(service);
-    //     Mockito.when(dunningRepository.save(dunningStep)).thenReturn(dunningStep);
-
-
-
-    //     // Verify that the repositories save methods are called
-    //     verify(customerRepository, times(1)).save(customer);
-    //     verify(serviceRepository, times(1)).save(service);
-    //     verify(dunningRepository, times(1)).save(dunningStep);
-        
+    //     verify(dunningRepository, times(1)).save(dunningStep);  
     // }
 
     @Test
-    public void testGenerateReminderMessage() {
+    void testGenerateReminderMessage() {
         Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", null, null);
         Service service = new Service(1L, "Basic", 1000, "Active", null, null);
         Dunning dunningStep = new Dunning();
@@ -163,7 +150,7 @@ public void testGeneratePdf_Success() throws IOException {
     }
 
     @Test
-    public void testIsFinalNoticeSent() {
+    void testIsFinalNoticeSent() {
         DunningRepository dunningRepository = Mockito.mock(DunningRepository.class);
         DunningService dunningService = new DunningService(null, null, dunningRepository);
         Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", null, null);
@@ -188,7 +175,7 @@ public void testGeneratePdf_Success() throws IOException {
     }
 
     @Test
-    public void testFindCustomersWithFollowUp() {
+    void testFindCustomersWithFollowUp() {
         List<Customer> overdueCustomers = new ArrayList<>();
     
         Customer customer1 = new Customer(1L, "jo", "jo@example.com", null, null);
@@ -208,7 +195,7 @@ public void testGeneratePdf_Success() throws IOException {
 
 
     @Test
-    public void testFindCustomersWithFinalNotice() {
+    void testFindCustomersWithFinalNotice() {
         List<Customer> overdueCustomers = new ArrayList<>();
     
         Customer customer1 = new Customer(1L, "jo", "jo@example.com", null, null);
@@ -227,7 +214,7 @@ public void testGeneratePdf_Success() throws IOException {
     }
 
     @Test
-    public void testIsServiceTerminationNeeded() {
+    void testIsServiceTerminationNeeded() {
         
         Customer customer = new Customer(1L, "jo", "jo@example.com", null, null);
         Service service = new Service(1L, "Basic", 1000, "Active", null, null);
@@ -242,8 +229,32 @@ public void testGeneratePdf_Success() throws IOException {
 
         assertTrue(serviceTerminationNeeded);
     }
+     @Test
+    void testHandleFinalNotice() {
+         Customer customer = new Customer(1L, "jo", "jo@example.com", null, null);
+        Service service = new Service(1L, "Basic", 1000, "Active", null, null);
+        when(serviceRepository.save(any(Service.class))).thenReturn(service);
+        dunningService.handleFinalNotice(customer, service);
+        assertEquals("Terminated", service.getStatus());
 
-    
+        verify(serviceRepository, times(1)).save((service));
+    }
+    @Test
+    void testGetTempDirectoryForTestEnvironment() {
+        System.setProperty("app.environment", "test");
+        DunningService dunningServiceTest = new DunningService(); 
+        Path tempDirectory = dunningServiceTest.getTempDirectory();
+        assertTrue(tempDirectory.toFile().isDirectory());
+        tempDirectory.toFile().deleteOnExit();
+    }
+
+    @Test
+    void testGetTempDirectoryForDefaultEnvironment() {
+        System.clearProperty("app.environment");
+        DunningService dunningServiceTest = new DunningService(); 
+        Path tempDirectory = dunningServiceTest.getTempDirectory();
+        assertEquals("/home/joseph/final", tempDirectory.toString());
+    }
 }
    
 
