@@ -21,7 +21,6 @@ function InvoiceForm({onSubmitInvoice, customerData, serviceData }) {
       let service = resService;
       let customer = resCustomer;
       let amount = invoiceAmount;
-      console.log("In invoice " + "amount" + amount + "dueDate" + dueDate + "customerId" + customer +  "Customer_name" + customerData.name + "Customer_email" + customerData.email + "Service" + serviceData.serviceName + " And " + serviceData.serviceCost)
       const response = await fetch('http://localhost:8080/api/addInvoice', {
       method: 'POST',
       headers: {

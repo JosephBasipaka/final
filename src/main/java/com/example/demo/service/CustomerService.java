@@ -12,7 +12,6 @@ import com.example.demo.repositories.CustomerRepository;
 
 @Service
 public class CustomerService {
-    
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -24,7 +23,7 @@ public class CustomerService {
     public List<Customer> findOverdueCustomers() {
         return customerRepository.findCustomersWithOverdueInvoices();
     }
-    
+
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId).orElse(null);
     }
@@ -32,16 +31,21 @@ public class CustomerService {
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
-    public Customer findId(String name, String email){
-       return customerRepository.findByNameAndEmail(name, email);
+
+    public Customer findId(String name, String email) {
+        return customerRepository.findByNameAndEmail(name, email);
     }
-    
+
+    public Customer getCustomerAndService(String name, String serviceName) {
+        return customerRepository.findByCustomerNameAndServiceName(name, serviceName);
+    }
+
     public Customer updateCustomer(Long customerId, Customer customer) {
         if (customerRepository.existsById(customerId)) {
             customer.setId(customerId);
             return customerRepository.save(customer);
         } else {
-            return null; 
+            return null;
         }
     }
 
@@ -50,7 +54,7 @@ public class CustomerService {
             customerRepository.deleteById(customerId);
             return true;
         } else {
-            return false; 
+            return false;
         }
     }
 

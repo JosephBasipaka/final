@@ -18,47 +18,47 @@ import com.example.demo.repositories.InvoiceRepository;
 import com.example.demo.service.InvoiceService;
 
 @SpringBootTest
- class InvoiceServiceTest {
-    
+class InvoiceServiceTest {
+
     @Autowired
     private InvoiceService invoiceService;
 
     @MockBean
     private InvoiceRepository invoiceRepository;
 
-    
-
     @Test
-     void testInvoiceList_Success() {
+    void testInvoiceList_Success() {
         List<Invoice> invoices = new ArrayList<>();
-        invoices.add(new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null));
-        invoices.add(new Invoice(2L,3000.0,LocalDate.now(), Boolean.TRUE,null,null));
+        invoices.add(new Invoice(1L, 5000.0, LocalDate.now(), Boolean.TRUE, null, null));
+        invoices.add(new Invoice(2L, 3000.0, LocalDate.now(), Boolean.TRUE, null, null));
         Mockito.when(invoiceRepository.findAll()).thenReturn(invoices);
 
-        List<Invoice> result = invoiceService.InvoiceList();
+        List<Invoice> result = invoiceService.invoiceList();
         assertEquals(2, result.size());
     }
+
     @Test
-     void testInvoiceList_Fail() {
+    void testInvoiceList_Fail() {
         List<Invoice> invoices = new ArrayList<>();
-        invoices.add(new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null));
+        invoices.add(new Invoice(1L, 5000.0, LocalDate.now(), Boolean.TRUE, null, null));
         Mockito.when(invoiceRepository.findAll()).thenReturn(invoices);
 
-        List<Invoice> result = invoiceService.InvoiceList();
+        List<Invoice> result = invoiceService.invoiceList();
         assertNotEquals(2, result.size());
     }
 
     @Test
-     void testAddInvoice_Success() {
-        Invoice invoice = new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null);
+    void testAddInvoice_Success() {
+        Invoice invoice = new Invoice(1L, 5000.0, LocalDate.now(), Boolean.TRUE, null, null);
         Mockito.when(invoiceRepository.save(invoice)).thenReturn(invoice);
 
         Invoice createdInvoice = invoiceService.addInvoice(invoice);
         assertEquals(invoice, createdInvoice);
     }
+
     @Test
-     void testAddInvoice_Fail() {
-        Invoice invoice = new Invoice(1L,5000.0,LocalDate.now(), Boolean.TRUE,null,null);
+    void testAddInvoice_Fail() {
+        Invoice invoice = new Invoice(1L, 5000.0, LocalDate.now(), Boolean.TRUE, null, null);
         Mockito.when(invoiceRepository.save(invoice)).thenReturn(invoice);
 
         Invoice test = new Invoice();

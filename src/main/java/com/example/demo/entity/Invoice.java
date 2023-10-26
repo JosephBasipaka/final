@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,23 +26,12 @@ public class Invoice {
     private LocalDate dueDate;
     private Boolean paid;
 
-    @JsonBackReference(value="invoice-customer")
+    @JsonBackReference(value = "invoice-customer")
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
-    @JsonBackReference(value="invoice-service")
+    @JsonBackReference(value = "invoice-service")
     @ManyToOne(fetch = FetchType.EAGER)
     private Service service;
 
-    @Override
-    public String toString() {
-        return "Invoice{" +
-            "id=" + id +
-            ", amount=" + amount +
-            ", dueDate=" + dueDate +
-            ", paid=" + paid +
-            '}';
-    }
-
 }
-

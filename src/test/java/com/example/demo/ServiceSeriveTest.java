@@ -17,10 +17,9 @@ import com.example.demo.entity.Service;
 import com.example.demo.repositories.ServiceRepository;
 import com.example.demo.service.ServiceService;
 
-
 @SpringBootTest
- class ServiceSeriveTest {
-    
+class ServiceSeriveTest {
+
     @Autowired
     private ServiceService serviceService;
 
@@ -30,17 +29,18 @@ import com.example.demo.service.ServiceService;
     @Test
     void testServiceList_Success() {
         List<Service> services = new ArrayList<>();
-        services.add(new Service(1L, "basic" , 1000, "Active", null, null));
-        services.add(new Service(2L, "premium" , 5000, "Terminated", null, null));
+        services.add(new Service(1L, "basic", 1000, "Active", null, null));
+        services.add(new Service(2L, "premium", 5000, "Terminated", null, null));
         Mockito.when(serviceRepository.findAll()).thenReturn(services);
 
         List<Service> result = serviceService.serviceList();
         assertEquals(2, result.size());
     }
+
     @Test
     void testServiceList_Fail() {
         List<Service> services = new ArrayList<>();
-        services.add(new Service(1L, "basic" , 1000, "Active", null, null));
+        services.add(new Service(1L, "basic", 1000, "Active", null, null));
         Mockito.when(serviceRepository.findAll()).thenReturn(services);
 
         List<Service> result = serviceService.serviceList();
@@ -48,16 +48,17 @@ import com.example.demo.service.ServiceService;
     }
 
     @Test
-     void testAddService_Success() {
-        Service Service = new Service(1L, "basic" , 1000, "Active", null, null);
+    void testAddService_Success() {
+        Service Service = new Service(1L, "basic", 1000, "Active", null, null);
         Mockito.when(serviceRepository.save(Service)).thenReturn(Service);
 
         Service createdService = serviceService.createService(Service);
         assertEquals(Service, createdService);
     }
+
     @Test
     void testAddService_Fail() {
-       Service Service = new Service(1L, "basic" , 1000, "Active", null, null);
+        Service Service = new Service(1L, "basic", 1000, "Active", null, null);
         Mockito.when(serviceRepository.save(Service)).thenReturn(Service);
 
         Service test = new Service();
@@ -65,12 +66,12 @@ import com.example.demo.service.ServiceService;
         assertNotEquals(Service, createdService);
     }
 
-     @Test
-     void testFindServiceForCustomer_Success() {
+    @Test
+    void testFindServiceForCustomer_Success() {
         List<Service> services = new ArrayList<>();
-        Service service = new Service(1L, "basic" , 1000, "Active", null, null);
+        Service service = new Service(1L, "basic", 1000, "Active", null, null);
         services.add(service);
-        Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", null, services);
+        Customer customer = new Customer(1L, "Joseph", "joseph@gmail.com", null, services, null, null);
 
         Mockito.when(serviceRepository.findByCustomer(customer)).thenReturn(service);
 

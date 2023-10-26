@@ -12,6 +12,10 @@ spring:
       ddl-auto: update
     show-sql: true
 
-# jwt:
-#   private.key: classpath:app.key
-#   public.key: classpath:app.pub
+Stripe:
+  apiKey: sk_test_51O4KdzSGBkDtFnqjpMM9VOqGATQKElJqujUcjFEwVIDV0JIDUyM9TXRlVdK4o5pJhwQl7sH6n9SWg5a1YUUU8BFy00dkKiuOfa
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
+file:
+  path: /home/joseph/final/customer_details.pdf

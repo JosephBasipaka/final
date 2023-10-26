@@ -5,29 +5,24 @@ import NavBar from "./Navbar/Navbar";
 import Dunning from "./Dunning/Dunning";
 import Payment from "./Payment/Payment";
 import Add from "./Add/Add";
-import Register from "./Login/Register";
-import Login from "./Login/Login";
-import Success from "./Payment/Success";
 
 export const USER_TYPES = {
   ADMIN: "ADMIN",
   USER: "USER",
 };
 
-export const CURRENT_USER_TYPE = USER_TYPES.ADMIN;
+export const CURRENT_USER_TYPE = USER_TYPES.USER;
 function App() {
   return (
     <div>
       <header>
+        <NavBar />
         <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Login />} />
           <Route
             path="/customer"
             element={
               <AdminElement>
-                <NavBar />
-                <Customer />
+                <Customer />{" "}
               </AdminElement>
             }
           />
@@ -35,7 +30,6 @@ function App() {
             path="/add"
             element={
               <UserElement>
-                <NavBar />
                 <Add />
               </UserElement>
             }
@@ -44,7 +38,6 @@ function App() {
             path="/dunning"
             element={
               <AdminElement>
-                <NavBar />
                 <Dunning />
               </AdminElement>
             }
@@ -53,7 +46,6 @@ function App() {
             path="/payments"
             element={
               <UserElement>
-                <NavBar />
                 <Payment />
               </UserElement>
             }
@@ -62,18 +54,9 @@ function App() {
             path="*"
             element={
               <div className="max-w-lg mx-auto mt-36 font-sans font-semibold text-sm text-black ">
-                <NavBar />
+                {" "}
                 Sorry! Page not Found
               </div>
-            }
-          />
-          <Route
-            path="/success"
-            element={
-              <>
-                <NavBar />
-                <Success />
-              </>
             }
           />
         </Routes>

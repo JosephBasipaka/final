@@ -9,11 +9,11 @@ import com.example.demo.entity.Customer;
 import com.example.demo.entity.PaymentPlan;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.service.CuringService;
-
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/curing")
+@CrossOrigin(origins = "*")
 public class CuringController {
 
     @Autowired
@@ -47,26 +47,8 @@ public class CuringController {
         if (customer == null || paymentPlan == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        
-        curingService.trackPayment(customer, paymentPlan,servicePlan, paymentAmount);
-
+        curingService.trackPayment(customer, paymentPlan, servicePlan, paymentAmount);
         return ResponseEntity.status(HttpStatus.OK).body(paymentPlan);
-    }
-
-    @PostMapping("/updateCustomerRecord")
-    public ResponseEntity<String> updateCustomerRecord(
-            @RequestParam Long customerId,
-            @RequestBody Customer updatedCustomer) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer not found");
-        }
-        // Update the customer's information
-        customer.setName(updatedCustomer.getName());
-        customer.setEmail(updatedCustomer.getEmail());
-        // Add other attributes as needed
-        curingService.updateCustomerRecord(customer);
-        return ResponseEntity.status(HttpStatus.OK).body("Customer record updated successfully");
     }
 
     @GetMapping("/paymentPlansByCustomer/{id}")
@@ -79,5 +61,3 @@ public class CuringController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentPlan);
     }
 }
-
-

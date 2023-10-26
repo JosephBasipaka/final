@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +24,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Service{
-    
+public class Service {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,22 +33,13 @@ public class Service{
     private double serviceCost;
     private String status;
 
-    @JsonBackReference(value="service-customer")
+    @JsonBackReference(value = "service-customer")
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @JsonManagedReference(value="invoice-service")
+    @JsonManagedReference(value = "invoice-service")
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Invoice> invoices;
 
-    @Override
-    public String toString() {
-        return "Service{" +
-            "id=" + id +
-            ", serviceName=" + serviceName +
-            ", serViceCost=" + serviceCost +
-            ", status=" + status +
-            '}';
-    }
 }
