@@ -12,10 +12,9 @@
    4.4. [Payment Processing](#44-payment-processing)
 5. [Non-Functional Requirements](#5-non-functional-requirements)
 6. [System Interfaces](#6-system-interfaces)
-7. [Security Requirements](#7-security-requirements)
-8. [Data Management](#8-data-management)
-9. [Reporting and Analytics](#9-reporting-and-analytics)
-10. [Appendices](#10-appendices)
+7. [Data Management](#8-data-management)
+8. [Reporting and Analytics](#9-reporting-and-analytics)
+9. [Appendices](#10-appendices)
 
 ## 1. Introduction
 The Billing and Collections System is designed to manage customer billing, payments, collections, and related processes efficiently. This Software Requirement Specification outlines the system's functional and non-functional requirements.
@@ -66,17 +65,11 @@ The system consists of modules for Customer Segmentation, Workflow Management, P
 - API for third-party collection agencies.
 - User-friendly web with responsive interfaces.
 
-## 7. Security Requirements
-- Role-based access control.
-- Encryption of sensitive customer data.
-
-## 8. Data Management
+## 7. Data Management
 - Data storage and retrieval for customer accounts, transactions, and payment history.
 - Data archiving and retention policies.
 
-## 9. Reporting and Analytics
+## 8. Reporting and Analytics
 - Generate reports on customer segments, and payment trends.
 
-## 10. Appendices
-- Glossary of Terms
-- References
+## 9. Appendices
