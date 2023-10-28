@@ -33,6 +33,11 @@ const NavBar = () => {
             Payments
           </Link>
         </li>
+        <li>
+          <Link to="/stats" className="text-white hover:text-gray-200">
+            Stats
+          </Link>
+        </li>
         <div>{CURRENT_USER_TYPE}</div>
       </ul>
     </nav>

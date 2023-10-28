@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState("");
-  const [nameValid, setNameValid] = useState(true);
   const [email, setEmail] = useState("");
+  const [nameValid, setNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);

@@ -39,7 +39,7 @@ function Add() {
 
   const handleInvoiceSubmit = (data) => {
     setInvoiceData(data);
-    navigate("/customers");
+    navigate("/customer");
   };
 
   return (

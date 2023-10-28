@@ -50,42 +50,41 @@ public class CuringService {
 
     @Transactional
     public void trackPayment(Customer customer, PaymentPlan paymentPlan, String servicePlan, double paymentAmount) {
-        Payment payment = new Payment();
-        payment.setCustomer(customer);
-        payment.setPaymentPlan(paymentPlan);
-        payment.setAmount(paymentAmount);
-        payment.setPaymentDate(LocalDate.now());
-        payment.setStatus(PaymentStatus.RECEIVED);
-
-        Service existingService = serviceRepository.findByCustomerIdAndServiceName(customer.getId(), servicePlan);
-        if (existingService == null) {
-            Service newService = new Service();
-            newService.setCustomer(customer);
-            newService.setServiceName(servicePlan);
-            newService.setServiceCost(paymentAmount);
-            newService.setStatus("Active");
-            serviceRepository.save(newService);
-        } else {
-            existingService.setServiceCost(existingService.getServiceCost() - paymentAmount);
-            serviceRepository.save(existingService);
-        }
-
-        paymentRepository.save(payment);
-        LocalDate dueDate = LocalDate.now().plusDays(30);
         Invoice invoice = invoiceRepository.findByCustomerIdAndPaid(customer.getId(), false);
-        if (invoice == null) {
-            Invoice newInvoice = new Invoice();
-            newInvoice.setCustomer(customer);
-            newInvoice.setAmount(paymentAmount);
-            newInvoice.setDueDate(dueDate);
-            newInvoice.setPaid(true);
-            invoiceRepository.save(newInvoice);
-        } else {
+        if (invoice.getAmount() > 0) {
+            Payment payment = new Payment();
+            payment.setCustomer(customer);
+            payment.setPaymentPlan(paymentPlan);
+            payment.setAmount(paymentAmount);
+            payment.setPaymentDate(LocalDate.now());
+            payment.setStatus(PaymentStatus.RECEIVED);
+
+            // Service existingService =
+            // serviceRepository.findByCustomerIdAndServiceName(customer.getId(),
+            // servicePlan);
+            // if (existingService == null) {
+            // Service newService = new Service();
+            // newService.setCustomer(customer);
+            // newService.setServiceName(servicePlan);
+            // newService.setServiceCost(paymentAmount);
+            // newService.setStatus("Active");
+            // serviceRepository.save(newService);
+            // } else {
+            // existingService.setServiceCost(existingService.getServiceCost() -
+            // paymentAmount);
+            // existingService.setStatus("Active");
+            // serviceRepository.save(existingService);
+            // }
+
+            LocalDate dueDate = LocalDate.now().plusDays(30);
+
             invoice.setAmount(invoice.getAmount() - paymentAmount);
             invoice.setDueDate(dueDate);
+            invoice.setPaid(true);
             invoiceRepository.save(invoice);
-        }
 
+            paymentRepository.save(payment);
+        }
     }
 
     public PaymentPlan getPaymentPlansByCustomer(Customer customer) {

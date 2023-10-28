@@ -8,6 +8,10 @@ import Add from "./Add/Add";
 import Register from "./Login/Register";
 import Login from "./Login/Login";
 import Success from "./Payment/Success";
+import PieChart from "./Dunning/PieChart";
+import PieChartComp from "./Dunning/PieChartComp";
+import Dummy from "./Dunning/Stats";
+import Stats from "./Dunning/Stats";
 
 export const USER_TYPES = {
   ADMIN: "ADMIN",
@@ -59,6 +63,15 @@ function App() {
             }
           />
           <Route
+            path="/stats"
+            element={
+              <AdminElement>
+                <NavBar />
+                <Stats />
+              </AdminElement>
+            }
+          />
+          <Route
             path="*"
             element={
               <div className="max-w-lg mx-auto mt-36 font-sans font-semibold text-sm text-black ">
@@ -94,4 +107,5 @@ function AdminElement({ children }) {
   if (CURRENT_USER_TYPE === USER_TYPES.ADMIN) return children;
   else return <div>You donot have access to this page</div>;
 }
+
 export default App;

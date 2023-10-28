@@ -82,21 +82,35 @@ function Payment() {
     fetchServices();
   };
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e) => {
     console.log("Payment Successfull");
-    navigate("/success");
+    const response = await fetch(
+      `http://localhost:8080/api/curing/trackPayment?customerId=${services.id}&paymentPlanId=${services.paymentPlan[0].id}&paymentAmount=${services.paymentPlan[0].installmentAmount}&servicePlan=${services.services[0].serviceName}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    );
+    const responseData = await response.json();
+    console.log(responseData);
+    if (response.status === 200) {
+      navigate("/success");
+    }
   };
 
   return (
     <>
-      <div className="flex  flex-col items-center w-full space-y-4 mx-auto h-screen diagonal-background">
+      <div className="flex  flex-col items-center w-full space-y-4 mx-auto h-[200vh] diagonal-background">
         <div>
           <form
             onSubmit={handleSubmit}
             className="grid place-items-center lg:w-11/12 sm:w-9/12 w-11/12 mx-auto mt-20 bg-white text-[#4f7cff] shadow-2xl rounded-3xl"
           >
             <div className="w-full flex items-center space-x-2 px-14 pt-4 pb-1">
-              <label>Name</label>
+              <label className="font-bold text-lg">Name</label>
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded-lg px-2 py-2 mt-1 text-lg outline-none"
@@ -113,12 +127,10 @@ function Payment() {
             {nameValid ? null : (
               <div className="text-red-500">Please enter a valid Name</div>
             )}
-            <div className="flex space-x-3">
-              <label className="font-bold font-sans text-lg">
-                Service Plan:
-              </label>
+            <div className="w-full flex flex-col px-14 py-4">
+              <label className="font-bold text-lg">Service Plan:</label>
               <select
-                className="rounded-md pl-2 bg-gray-300"
+                className="w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none"
                 value={selectedPlan}
                 onChange={handlePlanChange}
                 required

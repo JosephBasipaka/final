@@ -61,37 +61,49 @@ function PaymentPlanForm({ customerId, Amount }) {
   };
 
   return (
-    <div className="rounded-3xl h-auto w-auto mx-auto flex flex-col bg-white p-3 shadow-md hover:shadow-lg">
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          <label>Payment Option:</label>
-          <select
-            value={installmentOption}
-            onChange={handleInstallmentOptionChange}
-          >
-            <option value="onetime">One-Time Payment</option>
-            <option value="2times">2 Installments</option>
-            <option value="4times">4 Installments</option>
-          </select>
-        </div>
-        {installmentOption !== "onetime" && (
-          <div>
-            <label>For {numberOfInstallments} Installments :</label>
-            <div className="flex space-x-2">
-              <label>Amount Payable for one installment</label>
-              <input
-                type="number"
-                value={Amount / numberOfInstallments}
-                readOnly
-              />
-            </div>
-            <div className="flex space-x-2">
-              <label>DueDate to close the totalAmount is : </label>
-              <input type="date" value={dueDate} readOnly />
-            </div>
+    //   <div className="rounded-3xl h-auto w-auto mx-auto flex flex-col bg-white p-3 shadow-md hover:shadow-lg">
+    <form
+      onSubmit={handleFormSubmit}
+      className="grid place-items-center lg:w-5/12 sm:w-8/12 w-11/12 mx-auto bg-white text-[#4f7cff] shadow-2xl rounded-3xl"
+    >
+      <div className="w-full flex flex-col px-14 py-4">
+        <label>Payment Option:</label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none"
+          value={installmentOption}
+          onChange={handleInstallmentOptionChange}
+        >
+          <option value="onetime">One-Time Payment</option>
+          <option value="2times">2 Installments</option>
+          <option value="4times">4 Installments</option>
+        </select>
+      </div>
+      {installmentOption !== "onetime" && (
+        <div className="w-full flex flex-col px-14 py-4">
+          <label>For {numberOfInstallments} Installments :</label>
+          <div className="w-full flex flex-col px-14 py-4">
+            <label>Amount Payable for one installment</label>
+            <input
+              className="w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none"
+              type="number"
+              value={Amount / numberOfInstallments}
+              readOnly
+            />
           </div>
-        )}
+          <div className="w-full flex flex-col px-14 py-4">
+            <label>DueDate to close the totalAmount is : </label>
+            <input
+              className="w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none"
+              type="date"
+              value={dueDate}
+              readOnly
+            />
+          </div>
+        </div>
+      )}
+      <div className="mx-auto flex justify-center items-center pb-8">
         <button
+          className="bg-[#3d5fc4] text-white rounded-md text-base uppercase w-fit p-2 hover:bg-blue-800"
           type="submit"
           onClick={() => setPopupMessage("Payment Plan Added Successfully")}
         >
@@ -102,8 +114,9 @@ function PaymentPlanForm({ customerId, Amount }) {
           message={popupMessage}
           onClose={() => setShowSuccessMessage(false)}
         />
-      </form>
-    </div>
+      </div>
+    </form>
+    // </div>
   );
 }
 
