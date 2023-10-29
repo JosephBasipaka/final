@@ -1,3 +1,8 @@
+/**
+ * The `Payment` function is a React component that handles the payment process, including fetching
+ * services, selecting a payment plan, and making a payment.
+ * @returns The Payment component is being returned.
+ */
 import React, { useState } from "react";
 import ServiceCard from "./ServiceCard";
 import PaymentPlanForm from "./PaymentPlanForm";
@@ -25,6 +30,10 @@ function Payment() {
     setSelectedPlan(selectedOption);
   };
 
+  /**
+   * The function `handleCreatePaymentPlanClick` checks if there are any existing payment plans for a
+   * service and shows a payment plan form if there are none.
+   */
   const handleCreatePaymentPlanClick = () => {
     fetchPaymentPlans(services.id).then((result) => {
       if (!result) {
@@ -33,6 +42,10 @@ function Payment() {
     });
   };
 
+  /**
+   * The function fetches services from a specified API endpoint based on customer name and selected
+   * plan, and sets the fetched services in the state.
+   */
   const fetchServices = async () => {
     try {
       const response = await fetch(
@@ -51,6 +64,12 @@ function Payment() {
     }
   };
 
+  /**
+   * The function fetchPaymentPlans is an asynchronous function that fetches payment plans for a given
+   * customer ID from a specific API endpoint and handles the response accordingly.
+   * @param customerId - The `customerId` parameter is the unique identifier of a customer. It is used
+   * to fetch the payment plans associated with that customer from the server.
+   */
   const fetchPaymentPlans = async (customerId) => {
     try {
       const response = await fetch(
@@ -82,6 +101,13 @@ function Payment() {
     fetchServices();
   };
 
+  /**
+   * The handlePayment function logs a message, makes a POST request to a specified URL with some
+   * parameters and a JSON body, and navigates to a success page if the response status is 200.
+   * @param e - The parameter `e` is typically used to represent an event object. In this case, it is
+   * likely referring to an event that triggers the `handlePayment` function, such as a button click or
+   * form submission.
+   */
   const handlePayment = async (e) => {
     console.log("Payment Successfull");
     const response = await fetch(

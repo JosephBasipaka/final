@@ -1,3 +1,8 @@
+/**
+ * The Register function is a React component that renders a registration form with input fields for
+ * name, email, and password, and includes validation for each field.
+ * @returns The Register component is being returned.
+ */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

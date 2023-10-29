@@ -1,20 +1,16 @@
+/**
+ * The `Add` component is a React component that renders a multi-step form for adding customer,
+ * service, and invoice data, and navigates to the "/customer" page after submitting the invoice data.
+ * @returns The `Add` component is returning a JSX element that contains conditional rendering of three
+ * forms: `CustomerForm`, `ServiceForm`, and `InvoiceForm`. The forms are rendered based on the values
+ * of the `showCustomerForm`, `showServiceForm`, and `showInvoiceForm` state variables. The
+ * `CustomerForm` is shown when `showCustomerForm` is true
+ */
 import React, { useState } from "react";
 import CustomerForm from "./CustomerForm";
 import ServiceForm from "./ServiceForm";
 import InvoiceForm from "./InvoiceForm";
 import { useNavigate } from "react-router-dom";
-
-// function HandleInvoiceSubmit({ data, setInvoiceData, serviceData}) {
-//   // const [invoiceData, setInvoiceData] = useState({});
-//   const navigate = useNavigate();
-
-//   const handleSubmit = () => {
-//     setInvoiceData(data);
-//     navigate('/success');
-//   };
-
-//   return <InvoiceForm onSubmitInvoice={handleSubmit} customerData={data} serviceData={serviceData}/>;
-// }
 
 function Add() {
   const [showCustomerForm, setShowCustomerForm] = useState(true);
@@ -25,18 +21,35 @@ function Add() {
   const [invoiceData, setInvoiceData] = useState({});
   const navigate = useNavigate();
 
+  /**
+   * The function `handleCustomerSubmit` sets the customer data, hides the customer form, and shows the
+   * service form.
+   * @param data - The "data" parameter is the information submitted by the customer in the customer
+   * form. It could include details such as the customer's name, address, contact information, and any
+   * other relevant information.
+   */
   const handleCustomerSubmit = (data) => {
     setCustomerData(data);
     setShowCustomerForm(false);
     setShowServiceForm(true);
   };
 
+  /**
+   * The function `handleServiceSubmit` sets the service data, hides the service form, and shows the
+   * invoice form.
+   * @param data - The `data` parameter is an object that contains the information submitted in the
+   * service form.
+   */
   const handleServiceSubmit = (data) => {
     setServiceData(data);
     setShowServiceForm(false);
     setShowInvoiceForm(true);
   };
 
+  /**
+   * The function `handleInvoiceSubmit` sets the invoice data and navigates to the "/customer" page.
+   * @param data - The `data` parameter is an object that contains the invoice data.
+   */
   const handleInvoiceSubmit = (data) => {
     setInvoiceData(data);
     navigate("/customer");
@@ -57,7 +70,6 @@ function Add() {
           customerData={customerData}
           serviceData={serviceData}
         />
-        //  <HandleInvoiceSubmit customerData={customerData} serviceData = {serviceData} setInvoiceData={setInvoiceData} />
       )}
     </div>
   );

@@ -1,7 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import { fetchCustomers, fetchServices } from "../api";
-import axios from "axios";
-import PieChart from "./PieChart";
+/**
+ * The Dunning component is a React functional component that fetches customer data and dunning details
+ * from an API, and allows users to send reminder and termination emails to customers.
+ * @returns The component `Dunning` is being returned.
+ */
+import React, { useEffect, useState } from "react";
+import { fetchCustomers } from "../api";
 import PopupMessage from "./PopUpMessage";
 
 const Dunning = () => {
@@ -11,33 +14,18 @@ const Dunning = () => {
   const [showTerminationDetails, setShowTerminationDetails] = useState(false);
   const [showReminderButtons, setShowReminderButtons] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showChart, setShowChart] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
-  const activeCount = 10;
-  const terminatedCount = 5;
-  const activeColor = "blue";
-  const terminatedColor = "red";
-
-  const chartData = {
-    labels: ["Active", "Terminated"],
-    datasets: [
-      {
-        data: [activeCount, terminatedCount],
-        backgroundColor: [activeColor, terminatedColor],
-      },
-    ],
-  };
-  const handleShowChart = () => {
-    setShowChart(!showChart);
-  };
-
+  /* useEffect hook that is used to fetch customer data and dunning details
+  from an API. */
   useEffect(() => {
     fetchCustomers().then(async (response) => {
       setCustomers(response.data);
       setLoading(false);
 
+      /* The code is making a series of asynchronous fetch requests to an API endpoint. It is
+      using the `fetchPromises` array to store the promises returned by each fetch request. */
       const fetchPromises = response.data.map(async (customer) => {
         if (customer) {
           const serviceId = customer.services[0]?.id ?? 0;
@@ -70,6 +58,13 @@ const Dunning = () => {
     });
   }, []);
 
+  /**
+   * The function `sendReminders` sends reminder emails to customers based on a specified step using a
+   * POST request to a local API endpoint.
+   * @param step - The `step` parameter in the `sendReminders` function is used to specify the type of
+   * reminder to be sent. It is passed as a query parameter in the URL of the API request. The value of
+   * `step` determines the specific type of reminder to be sent.
+   */
   async function sendReminders(step) {
     console.log("Working Remainder function");
     const response = await fetch(
@@ -139,6 +134,10 @@ const Dunning = () => {
       console.error("Failed to send remainder");
     }
   }
+  /**
+   * The function `sendTermination` sends a termination mail to all customers by making a POST request
+   * to a specific API endpoint.
+   */
   async function sendTermination() {
     console.log("Working Termination function");
     const response = await fetch(
@@ -159,6 +158,10 @@ const Dunning = () => {
     }
   }
 
+  /**
+   * The function `handleReminderButtons` toggles the visibility of reminder buttons and hides other
+   * details if they are currently visible.
+   */
   const handleReminderButtons = () => {
     setShowReminderButtons(!showReminderButtons);
     if (showReminderDetails) {

@@ -1,3 +1,8 @@
+/**
+ * The `ServiceForm` component is a form that allows users to select a service plan and submit the form
+ * to add a new service.
+ * @returns The ServiceForm component is being returned.
+ */
 import React, { useState } from "react";
 function ServiceForm({ onSubmitService, customerData }) {
   const [selectedPlan, setSelectedPlan] = useState("");
@@ -9,6 +14,13 @@ function ServiceForm({ onSubmitService, customerData }) {
     { name: "Premium", amount: 5000 },
   ];
 
+  /**
+   * The function `handlePlanChange` updates the selected plan and its corresponding amount based on
+   * the option selected by the user.
+   * @param e - The parameter "e" is an event object that represents the event that triggered the
+   * function. In this case, it is likely an event object from a change event, such as a user selecting
+   * an option from a dropdown menu.
+   */
   const handlePlanChange = (e) => {
     const selectedOption = e.target.value;
     setSelectedPlan(selectedOption);
@@ -20,6 +32,13 @@ function ServiceForm({ onSubmitService, customerData }) {
     }
   };
 
+  /**
+   * The function handleSubmitService is an asynchronous function that handles the submission of a
+   * service form by making API requests to fetch customer data and add a new service.
+   * @param e - The parameter `e` is an event object that represents the event that triggered the
+   * function. In this case, it is used to prevent the default form submission behavior by calling
+   * `e.preventDefault()`.
+   */
   const handleSubmitService = async (e) => {
     e.preventDefault();
     let resCustomer;

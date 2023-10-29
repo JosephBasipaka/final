@@ -1,3 +1,7 @@
+/**
+ * The PaymentPlan component displays payment plan details and a button to handle payment.
+ * @returns The PaymentPlan component is returning a JSX element.
+ */
 import React from "react";
 
 function PaymentPlan({ paymentPlans, handlePayment }) {

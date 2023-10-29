@@ -1,3 +1,8 @@
+/**
+ * The `CustomerForm` component is a form that allows users to input customer details and submit them
+ * to an API endpoint.
+ * @returns The CustomerForm component is being returned.
+ */
 import React, { useState } from "react";
 function CustomerForm({ onSubmit }) {
   const [name, setName] = useState("");
@@ -7,6 +12,13 @@ function CustomerForm({ onSubmit }) {
   const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  /**
+   * The function handleSubmitCustomer is an asynchronous function that handles the submission of
+   * customer data by making a POST request to an API endpoint and logging the success or failure of
+   * the request.
+   * @param e - The parameter `e` is an event object that represents the event that triggered the
+   * function. In this case, it is likely an event object from a form submission.
+   */
   const handleSubmitCustomer = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:8080/api/addCustomer", {

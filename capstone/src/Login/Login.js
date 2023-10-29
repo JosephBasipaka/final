@@ -1,5 +1,9 @@
+/**
+ * The Login function is a React component that renders a login form and handles form submission.
+ * @returns The Login component is being returned.
+ */
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CURRENT_USER_TYPE, USER_TYPES } from "../App";
 
 function Login() {
@@ -17,7 +21,7 @@ function Login() {
     setEmail("");
     setPassword("");
 
-    if (CURRENT_USER_TYPE == USER_TYPES.ADMIN) navigate("/customer");
+    if (CURRENT_USER_TYPE === USER_TYPES.ADMIN) navigate("/customer");
     else navigate("/add");
   };
   return (

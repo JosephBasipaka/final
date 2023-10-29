@@ -1,3 +1,8 @@
+/**
+ * The `ServiceCard` component is a React component that displays information about a service and
+ * allows the user to create payment plans.
+ * @returns The ServiceCard component is returning a JSX element.
+ */
 import React from "react";
 
 function ServiceCard({ service, handleCreatePaymentPlanClick }) {

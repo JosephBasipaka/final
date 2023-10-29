@@ -1,3 +1,11 @@
+/**
+ * The `Stats` component is a React functional component that displays various statistics and charts
+ * based on customer data fetched from an API.
+ * @returns The `Stats` component returns a JSX element that represents the UI for displaying various
+ * statistics and charts based on customer data. The returned JSX element contains multiple
+ * `PieChartComp` components and conditional rendering based on the selected service, invoice, and
+ * status.
+ */
 import React, { useEffect, useState } from "react";
 import { fetchCustomers } from "../api";
 import PieChartComp from "./PieChartComp";
@@ -22,6 +30,12 @@ export default function Stats() {
   const [customersWithSelectedStatus, setCustomersWithSelectedStatus] =
     useState([]);
 
+  /**
+   * The function `handleChartClick` filters the `customers` array based on the selected service and
+   * updates the `customersWithSelectedService` state.
+   * @param index - The `index` parameter represents the index of the selected chart element. It is
+   * used to determine which service was selected from the chart.
+   */
   const handleChartClick = (index) => {
     setSelectedInvoice("");
     setSelectedStatus("");
@@ -34,6 +48,13 @@ export default function Stats() {
     console.log(filteredCustomers);
     setCustomersWithSelectedService(filteredCustomers);
   };
+  /**
+   * The function `handlePaidClick` filters the `customers` array based on the selected invoice status
+   * (paid or unpaid) and updates the `filteredCustomers` array and `customersWithSelectedInvoice`
+   * state accordingly.
+   * @param index - The `index` parameter represents the index of the selected invoice option. It is
+   * used to determine which invoice option was selected from the `invoices` array.
+   */
   const handlePaidClick = (index) => {
     setSelectedService("");
     setSelectedStatus("");
@@ -51,6 +72,12 @@ export default function Stats() {
     console.log(filteredCustomers);
     setCustomersWithSelectedInvoice(filteredCustomers);
   };
+  /**
+   * The function `handleStatusClick` filters the `customers` array based on the selected status and
+   * updates the `customersWithSelectedStatus` state.
+   * @param index - The `index` parameter represents the index of the selected status in the `status`
+   * array.
+   */
   const handleStatusClick = (index) => {
     setSelectedService("");
     setSelectedInvoice("");
@@ -64,6 +91,9 @@ export default function Stats() {
     setCustomersWithSelectedStatus(filteredCustomers);
   };
 
+  /* The `useEffect` hook is used to perform side effects in a functional component. In this case, the
+  `useEffect` hook is used to fetch customer data from an API and update the state variables
+  accordingly. */
   useEffect(() => {
     fetchCustomers().then((response) => {
       setCustomers(response.data);

@@ -1,3 +1,8 @@
+/**
+ * The `Failure` function is a React component that displays a payment failure message and a button to
+ * try again.
+ * @returns The `Failure` component is returning a JSX element.
+ */
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

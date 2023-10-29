@@ -33,7 +33,6 @@ function PaymentPlanForm({ customerId, Amount }) {
     console.log(response.body);
     if (response.status === 201) {
       setShowSuccessMessage(true);
-
       console.log("Payment Plan Added Successfully");
     } else {
       console.error("Failed to add Payment Plan");
@@ -46,6 +45,8 @@ function PaymentPlanForm({ customerId, Amount }) {
 
     if (selectedOption === "onetime") {
       setNumberOfInstallments(1);
+      const date = new Date();
+      console.log(date);
       setDueDate(new Date().toISOString().split("T")[0]);
     } else if (selectedOption === "2times") {
       setNumberOfInstallments(2);
@@ -105,14 +106,20 @@ function PaymentPlanForm({ customerId, Amount }) {
         <button
           className="bg-[#3d5fc4] text-white rounded-md text-base uppercase w-fit p-2 hover:bg-blue-800"
           type="submit"
-          onClick={() => setPopupMessage("Payment Plan Added Successfully")}
+          onClick={() => {
+            setPopupMessage(
+              `Payment Plan Added Successfully. Please Click <span class="text-green-500">"See Payment Plan Button"</span> to Pay`
+            );
+          }}
         >
           Create Payment Plan
         </button>
         <PopupMessage
           show={showSuccessMessage}
           message={popupMessage}
-          onClose={() => setShowSuccessMessage(false)}
+          onClose={() => {
+            setShowSuccessMessage(false);
+          }}
         />
       </div>
     </form>

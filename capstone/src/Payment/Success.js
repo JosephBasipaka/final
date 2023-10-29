@@ -1,3 +1,9 @@
+/**
+ * The `Success` component is a React functional component that displays a success message and a button
+ * to proceed to another page.
+ * @returns The Success component is returning JSX code, which represents the structure and content of
+ * the component's rendered output.
+ */
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
